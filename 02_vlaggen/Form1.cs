@@ -1,17 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace _02_vlaggen
 {
-    struct flagStruct
+    
+    struct imgStruct
     {
         public String imgName;
         public int imgIndex;
@@ -21,13 +16,16 @@ namespace _02_vlaggen
 
     public partial class Form1 : Form
     {
-        string imgPath = Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString()
-                            + "\\img\\"; // `cd ../img | bash`
+        static string imgPath = Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString()
+                        + "\\img\\"; // `cd ../img | bash`
+        //string imgPath = Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString()
+        //                    + "\\img\\"; // `cd ../img | bash`
+        int imgCount = Directory.GetFiles($"{imgPath}", "*.svg").Length;
+        
         string currentImage = "";
-        uint currentIndex = 0;
+        int currentIndex = 0;
 
-        // string foldersize = Directory.EnumerateFiles("./").ToString();
-        flagStruct[] flagArray = new flagStruct[255]; // flag-images.count
+        imgStruct[] imgArray = null;
 
         public Form1()
         {
@@ -37,43 +35,66 @@ namespace _02_vlaggen
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void Load_Images()
         {
+            imgArray = new imgStruct[imgCount];
             DirectoryInfo d = new DirectoryInfo(imgPath);
-            int flagCount = 0;
 
+            int icnt = 0;
             foreach (var file in d.GetFiles("*.svg"))
             {
-                flagArray[flagCount].imgName = file.Name; //.Split('.').First().Remove(0, 8).Replace('_', ' ');
-                flagArray[flagCount].imgIndex = flagCount;
+                imgArray[icnt].imgName = file.Name;
+                imgArray[icnt].imgIndex = icnt;
                 
-                Console.WriteLine($"{flagArray[flagCount].imgName}\n{flagArray[flagCount].imgIndex}");
-                flagCount += 1;
+                icnt += 1;
             }
+
         }
 
         private void btn_prev_Click(object sender, EventArgs e)
         {
-            currentImage = flagArray[currentIndex -= 1].imgName;
-            
+            currentIndex -= 1;
+            currentIndex %= imgArray.Length;
+
+            currentImage = imgArray[currentIndex].imgName;
             imageBox.Url = new Uri($"{imgPath}{currentImage}");
-            Console.WriteLine(imageBox.Url);
         }
 
         private void btn_next_Click(object sender, EventArgs e)
         {
-            currentImage = flagArray[currentIndex += 1].imgName;
+            currentIndex += 1;
+            currentIndex %= imgArray.Length - 1;
 
+            currentImage = imgArray[currentIndex].imgName;
             imageBox.Url = new Uri($"{imgPath}{currentImage}");
-            Console.WriteLine(imageBox.Url);
         }
 
         private void btn_guess_Click(object sender, EventArgs e)
         {
-            //textBox.Text = imageBox.Url.ToString().Split('.').First().Split('/').Last().Remove(0, 8).Replace('_', ' ');
+            string answer = imageBox.Url.ToString().Split('.').First().Split('/').Last().Remove(0, 8).Replace('_', ' ');
+            if (textBox.Text == answer || textBox.Text == answer.ToLower())
+            {
+                var imagelist = imgArray.ToList();
+                imagelist.RemoveAt(currentIndex);
+                imgArray = imagelist.ToArray();
+
+                textBox.Text = "Correct";
+                btn_next_Click(sender, e);
+                Console.WriteLine(imgArray.Length);
+            }
+
+        }
+
+        private void resizeSvg_Click(object sender, EventArgs e)
+        {
+            /*
+            string text = File.ReadAllText(imgPath + file.Name);
+            text = text.Replace("380pt", "380pt");
+            text = text.Replace("200pt", "200pt");
+            File.WriteAllText(imgPath + file.Name, text);
+            */
         }
     }
 }
