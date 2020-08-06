@@ -110,21 +110,16 @@ namespace _02_vlaggen
         {
             string answer = imageBox.Url.ToString().Split('.').First().Split('/').Last().Remove(0, 8).Replace('_', ' ');
    
-            if (textBox.Text == answer || textBox.Text == answer.ToLower())
+            if (textBox.Text == answer || textBox.Text.ToLower() == answer.ToLower())
             {
                 points += imgArray[currentIndex].errorCount;
-                
-                var imagelist = imgArray.ToList();
-                imagelist.RemoveAt(currentIndex);
-                imgArray = imagelist.ToArray();
 
                 lbl_Status.Text = $"{answer} is correct!";
                 lbl_Status.ForeColor = Color.Green;
-
                 textBox.Text = "";
-                totalCorrect += 1;
 
-                btn_prev_Click(sender, e);
+                Array_Remove();
+                totalCorrect += 1;
             }
             else if (imgArray[currentIndex].errorCount == 1)
             {
@@ -132,14 +127,13 @@ namespace _02_vlaggen
 
                 totalFailed += 1;
                 Array_Remove();
-                btn_prev_Click(sender, e);
             }
             else
             {
+                imgArray[currentIndex].errorCount -= 1;
+
                 StringBuilder charray = new StringBuilder(answer);
                 int length = answer.Length;
-
-                imgArray[currentIndex].errorCount -= 1;
 
                 int x = 0;
                 while (x < length)
@@ -155,19 +149,19 @@ namespace _02_vlaggen
                 lbl_Status.Text = $"Incorrect... \r\nHint: {charray} {x}";
                 lbl_Status.ForeColor = Color.Red;
             }
-            Update_Label();
+            currentImage = imgArray[currentIndex].imgName;
+            imageBox.Url = new Uri($"{imgPath}{currentImage}");
 
-        }
-        
-        private void resizeSvg_Click(object sender, EventArgs e)
-        {
-            /*
-            string text = File.ReadAllText(imgPath + file.Name);
-            text = text.Replace("380pt", "380pt");
-            text = text.Replace("200pt", "200pt");
-            File.WriteAllText(imgPath + file.Name, text);
-            */
+            Update_Label();
         }
 
     }
+
 }
+
+/*
+string text = File.ReadAllText(imgPath + file.Name);
+text = text.Replace("380pt", "380pt");
+text = text.Replace("200pt", "200pt");
+File.WriteAllText(imgPath + file.Name, text);
+*/

@@ -33,7 +33,6 @@
             this.btn_next = new System.Windows.Forms.Button();
             this.textBox = new System.Windows.Forms.TextBox();
             this.btn_guess = new System.Windows.Forms.Button();
-            this.resizeSvg = new System.Windows.Forms.Button();
             this.lbl_Total = new System.Windows.Forms.Label();
             this.btn_Start = new System.Windows.Forms.Button();
             this.lbl_Status = new System.Windows.Forms.Label();
@@ -103,20 +102,6 @@
             this.btn_guess.UseVisualStyleBackColor = false;
             this.btn_guess.Click += new System.EventHandler(this.btn_guess_Click);
             // 
-            // resizeSvg
-            // 
-            this.resizeSvg.BackColor = System.Drawing.Color.Indigo;
-            this.resizeSvg.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.resizeSvg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resizeSvg.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.resizeSvg.Location = new System.Drawing.Point(526, 281);
-            this.resizeSvg.Name = "resizeSvg";
-            this.resizeSvg.Size = new System.Drawing.Size(132, 67);
-            this.resizeSvg.TabIndex = 5;
-            this.resizeSvg.Text = "Resize SVG";
-            this.resizeSvg.UseVisualStyleBackColor = false;
-            this.resizeSvg.Click += new System.EventHandler(this.resizeSvg_Click);
-            // 
             // lbl_Total
             // 
             this.lbl_Total.AutoSize = true;
@@ -174,7 +159,6 @@
             this.Controls.Add(this.lbl_Status);
             this.Controls.Add(this.btn_Start);
             this.Controls.Add(this.lbl_Total);
-            this.Controls.Add(this.resizeSvg);
             this.Controls.Add(this.btn_guess);
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.btn_next);
@@ -196,7 +180,6 @@
         private System.Windows.Forms.Button btn_next;
         private System.Windows.Forms.TextBox textBox;
         private System.Windows.Forms.Button btn_guess;
-        private System.Windows.Forms.Button resizeSvg;
         private System.Windows.Forms.Label lbl_Total;
         private System.Windows.Forms.Button btn_Start;
         private System.Windows.Forms.Label lbl_Status;
